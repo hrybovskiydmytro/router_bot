@@ -1,14 +1,14 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from datetime import datetime
+from google_creds import load_creds_from_env
+from config import GOOGLE_SA_JSON
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 class AnalyticsWriter:
     def __init__(self, sheet_id: str, credentials_path: str):
-        creds = service_account.Credentials.from_service_account_file(
-            credentials_path, scopes=SCOPES
-        )
+        creds = load_creds_from_env(GOOGLE_SA_JSON, SCOPES)
         self.service = build("sheets", "v4", credentials=creds)
         self.sheet_id = sheet_id
 

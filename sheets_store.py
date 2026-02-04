@@ -2,6 +2,8 @@ from dataclasses import dataclass
 import time
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from google_creds import load_creds_from_env
+from config import GOOGLE_SA_JSON
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -21,9 +23,7 @@ class TopicsStore:
         self._cache = {}
         self._cache_ts = 0
 
-        creds = service_account.Credentials.from_service_account_file(
-            credentials_path, scopes=SCOPES
-        )
+        creds = load_creds_from_env(GOOGLE_SA_JSON, SCOPES)
         self.service = build("sheets", "v4", credentials=creds)
 
     def get_topics(self):
